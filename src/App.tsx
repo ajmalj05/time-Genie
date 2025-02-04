@@ -1032,13 +1032,13 @@ function App() {
               <div className="flex items-center justify-center space-x-2 text-gray-400">
                 <Mail className="w-4 h-4" />
                 <a href="mailto:your.email@example.com" className="hover:text-blue-400 transition-colors">
-                  your.email@example.com
+                  ajmalj2003@gmail.com
                 </a>
               </div>
               <div className="flex items-center justify-center space-x-2 text-gray-400 mt-2">
                 <Globe className="w-4 h-4" />
                 <a href="https://your-website.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
-                  your-website.com
+                  coming soon
                 </a>
               </div>
             </div>
@@ -1048,7 +1048,7 @@ function App() {
               <h3 className="text-lg font-semibold text-white mb-3">Connect</h3>
               <div className="flex justify-center md:justify-end space-x-4">
                 <a
-                  href="https://github.com/yourusername"
+                  href="https://github.com/ajmalj05"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-blue-400 transition-colors"
@@ -1081,7 +1081,7 @@ function App() {
           {/* Copyright */}
           <div className="text-center mt-8 pt-6 border-t border-gray-700">
             <p className="text-sm text-gray-400">
-              © {new Date().getFullYear()} TimeSync. Built with ❤️ by Your Name
+              © {new Date().getFullYear()} TimeGenie. Built with ❤️ by Ajmal J
             </p>
           </div>
         </div>
