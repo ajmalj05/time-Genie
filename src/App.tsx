@@ -928,6 +928,22 @@ function App() {
                 Week {getWeek()} of {time.getFullYear()}
               </div>
             </div>
+               {/* Time Format Controls */}
+          <div className="flex justify-center space-x-4 mb-8 border-b border-gray-700 pb-6">
+            <button
+              onClick={() => setIs24Hour(!is24Hour)}
+              className="text-sm hover:text-blue-400"
+            >
+              {is24Hour ? '12h' : '24h'} format
+            </button>
+            <button
+              onClick={() => setShowSeconds(!showSeconds)}
+              className="text-sm hover:text-blue-400"
+            >
+              {showSeconds ? 'Hide' : 'Show'} seconds
+            </button>
+          </div>
+
 
             {specialDay && (
               <div className="bg-gray-700 rounded-lg p-4 mb-4">
@@ -999,22 +1015,7 @@ function App() {
 
       <footer className="mt-12 border-t border-gray-700">
         <div className="container mx-auto px-4 py-8">
-          {/* Time Format Controls */}
-          <div className="flex justify-center space-x-4 mb-8 border-b border-gray-700 pb-6">
-            <button
-              onClick={() => setIs24Hour(!is24Hour)}
-              className="text-sm hover:text-blue-400"
-            >
-              {is24Hour ? '24h' : '12h'} format
-            </button>
-            <button
-              onClick={() => setShowSeconds(!showSeconds)}
-              className="text-sm hover:text-blue-400"
-            >
-              {showSeconds ? 'Hide' : 'Show'} seconds
-            </button>
-          </div>
-
+       
           {/* Developer Info */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* About */}
