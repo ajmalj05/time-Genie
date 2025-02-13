@@ -12,5 +12,6 @@ function App() {
       <Route path="/clock" element={<ClockPage />} />
     </Routes>
   );
+}
 
 export default App;
