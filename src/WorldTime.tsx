@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Clock, Bell, Search, Filter } from 'lucide-react';
+import { Clock, Bell, Search, Filter, ChevronDown } from 'lucide-react';
 import { countries } from './data/countries';
 import Layout from './components/Layout';
 
@@ -12,6 +12,8 @@ const WorldTime = () => {
   const [selectedContinent, setSelectedContinent] = useState('All');
   const [showAlarmModal, setShowAlarmModal] = useState(false);
   const [alarms, setAlarms] = useState<Array<{ time: string; country: string }>>([]);
+  const [selectedCountry, setSelectedCountry] = useState(countries[2]); // Default to UK
+  const [showCountrySelect, setShowCountrySelect] = useState(false);
 
   // Update time every second
   useEffect(() => {
@@ -28,6 +30,7 @@ const WorldTime = () => {
     return date.toLocaleTimeString('en-US', {
       hour: '2-digit',
       minute: '2-digit',
+      second: '2-digit',
       hour12: true
     });
   };
@@ -75,6 +78,9 @@ const WorldTime = () => {
     audio.play();
   };
 
+  // Get comparison countries for time difference grid
+  const comparisonCountries = countries.slice(0, 6);
+
   return (
     <Layout
       soundEnabled={soundEnabled}
@@ -117,15 +123,77 @@ const WorldTime = () => {
       </div>
 
       {/* Current Time Display */}
-      <div className="bg-white rounded-xl shadow-lg p-6 mb-8 cursor-pointer" onClick={() => navigate('/clock')}>
-        <div className="flex items-center space-x-4 mb-4">
-          <Clock className="w-6 h-6 text-blue-500" />
-          <h2 className="text-xl font-semibold">Current Time</h2>
+      <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="w-full md:w-auto">
+            <div className="flex items-center space-x-4 mb-4">
+              <Clock className="w-8 h-8 text-blue-500" />
+              <h2 className="text-2xl font-semibold">Current Time</h2>
+            </div>
+            <div className="relative">
+              <button
+                onClick={() => setShowCountrySelect(!showCountrySelect)}
+                className="w-full md:w-auto flex items-center justify-between space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100"
+              >
+                <div className="flex items-center space-x-3">
+                  <img
+                    src={selectedCountry.flag}
+                    alt={`${selectedCountry.name} flag`}
+                    className="w-10 h-6 object-cover rounded"
+                  />
+                  <span className="font-medium">{selectedCountry.name}</span>
+                </div>
+                <ChevronDown className="w-5 h-5 text-gray-500" />
+              </button>
+              
+              {showCountrySelect && (
+                <div className="absolute z-10 w-full mt-2 bg-white rounded-lg shadow-lg max-h-96 overflow-y-auto">
+                  {countries.map(country => (
+                    <button
+                      key={country.name}
+                      onClick={() => {
+                        setSelectedCountry(country);
+                        setShowCountrySelect(false);
+                      }}
+                      className="w-full flex items-center space-x-3 p-3 hover:bg-gray-50"
+                    >
+                      <img
+                        src={country.flag}
+                        alt={`${country.name} flag`}
+                        className="w-8 h-5 object-cover rounded"
+                      />
+                      <span>{country.name}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+          
+          <div className="text-center">
+            <div className="text-6xl font-mono font-bold text-gray-800 mb-2">
+              {formatTime(getCountryTime(selectedCountry.offset))}
+            </div>
+            <p className="text-gray-500">
+              {new Date().toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
+            </p>
+            <p className="text-sm text-blue-500 mt-2">
+              UTC{selectedCountry.offset >= 0 ? '+' : ''}{selectedCountry.offset}
+            </p>
+          </div>
+          
+          <button
+            onClick={() => navigate('/clock')}
+            className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            Open Full Clock
+          </button>
         </div>
-        <div className="text-4xl font-mono font-bold text-gray-800">
-          {formatTime(currentTime)}
-        </div>
-        <p className="text-sm text-blue-500 mt-2">Click to open full clock view</p>
       </div>
 
       {/* Time Difference Graph */}
@@ -133,17 +201,17 @@ const WorldTime = () => {
         <h2 className="text-xl font-semibold mb-4">Time Differences</h2>
         <div className="overflow-x-auto">
           <div className="min-w-max">
-            <div className="grid grid-cols-[auto_repeat(3,1fr)] gap-4">
+            <div className="grid grid-cols-[auto_repeat(6,1fr)] gap-4">
               <div></div>
-              {countries.slice(0, 3).map(country => (
+              {comparisonCountries.map(country => (
                 <div key={country.name} className="text-center font-medium">
                   {country.name}
                 </div>
               ))}
-              {countries.slice(0, 3).map(country1 => (
+              {comparisonCountries.map(country1 => (
                 <React.Fragment key={country1.name}>
                   <div className="font-medium">{country1.name}</div>
-                  {countries.slice(0, 3).map(country2 => (
+                  {comparisonCountries.map(country2 => (
                     <div key={`${country1.name}-${country2.name}`} className="text-center">
                       {country1 === country2 ? (
                         '-'
